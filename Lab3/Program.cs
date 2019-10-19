@@ -26,7 +26,7 @@ namespace LaboratoryWork3
                 Write("\a" + exMessage);
                 Thread.Sleep(1250);
                 ResetColor();
-                
+
                 StringCleaner(exMessage);
             }
                 
