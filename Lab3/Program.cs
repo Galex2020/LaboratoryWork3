@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Дан массив целых чисел М (м1, м2, .., м9).
+// Найти количество и сумму тех mi, которые делятся на 5 и не делятся на 7.
+
+using System;
 using System.Text;
 using System.Threading;
 using static System.Console;
@@ -7,63 +10,71 @@ namespace LaboratoryWork3
 {
     class Program
     {
-        private static int ForceParse(string exMessage)
+        // Метод для парсинга string в int.
+        // До тех пор, пока вводимая строка не распарсится.
+        private static int GetForcedParse(string exceptionMessage, int exceptionMessageShowTime = 1250)
         {
             string inputString;
             int resultInt;
 
             while (true)
             {
-                if (int.TryParse(inputString = StringLimiter(11), out resultInt))
+                if (int.TryParse(inputString = GetLimitedString(11), out resultInt))
                 {
                     WriteLine();
                     return resultInt;
                 }
 
-                StringCleaner(inputString);
+                ClearString(inputString);
 
                 ForegroundColor = ConsoleColor.Red;
-                Write("\a" + exMessage);
-                Thread.Sleep(1250);
+                Write("\a" + exceptionMessage);
+                Thread.Sleep(exceptionMessageShowTime);
                 ResetColor();
 
-                StringCleaner(exMessage);
+                ClearString(exceptionMessage);
             }
                 
         }
 
-        private static string StringLimiter(int limit)
+        // Метод для ограничения длинны вводимой строки.
+        // Так же реализует функции клавиш: Enter и Backspace.
+        private static string GetLimitedString(int limitOfChars)
         {
-            var resultSB = new StringBuilder(limit);
+            var resultStringBuilder = new StringBuilder(limitOfChars);
 
-            while (resultSB.Length < limit)
+            while (resultStringBuilder.Length < limitOfChars)
             {
-                var keyPress = ReadKey();
+                ConsoleKeyInfo keyPress = ReadKey();
 
                 switch (keyPress.Key)
                 {
                     case ConsoleKey.Enter:
-                        return resultSB.ToString();
+                        return resultStringBuilder.ToString();
 
                     case ConsoleKey.Backspace:
-                        if (resultSB.Length == 0)
+                        if (string.IsNullOrEmpty(resultStringBuilder.ToString()))
                             break;
-                        resultSB.Remove(resultSB.Length - 1, 1);
-                        SetCursorPosition(resultSB.Length, CursorTop);
+                        resultStringBuilder.Remove(resultStringBuilder.Length - 1, 1);
+
+                        //Можно заменить на: Write('\b');
+                        SetCursorPosition(resultStringBuilder.Length, CursorTop);
                         Write(' ');
-                        SetCursorPosition(resultSB.Length, CursorTop);
+                        SetCursorPosition(resultStringBuilder.Length, CursorTop);
                         break;
 
                     default:
-                        resultSB.Append(keyPress.KeyChar);
+                        resultStringBuilder.Append(keyPress.KeyChar);
                         break;
                 }
             }
 
-            return resultSB.ToString();
+            return resultStringBuilder.ToString();
         }
 
-        private static void StringCleaner(string stringToClear)
+        // Метод для стирания строки.
+        // Можно заменить на: Write(new string('\b', stringToClear.Length));
+        private static void ClearString(string stringToClear)
         {
             SetCursorPosition(0, CursorTop);
             Write(new string(' ', stringToClear.Length));
@@ -80,10 +91,12 @@ namespace LaboratoryWork3
             int countArrayElements = 0;
             int sumArrayElements = 0;
 
+            // Ввод элементов массива.
             for (var i = 0; i < 9; i++)
             {
-                inputArray[i] = ForceParse("Ошибка ввода!");
+                inputArray[i] = GetForcedParse("Ошибка ввода!");
 
+                // Подсчёт количества и суммы элементов, походящих условию задачи.
                 if (inputArray[i] % 5 == 0 && inputArray[i] % 7 != 0)
                 {
                     countArrayElements++;
@@ -95,7 +108,7 @@ namespace LaboratoryWork3
             WriteLine($"\nКоличество: {countArrayElements}\tСумма: {sumArrayElements}");
 
             ResetColor();
-            ReadKey();
+            ReadKey(true);
         }
     }
 }
