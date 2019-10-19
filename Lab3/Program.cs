@@ -57,7 +57,7 @@ namespace LaboratoryWork3
                             break;
                         resultStringBuilder.Remove(resultStringBuilder.Length - 1, 1);
 
-                        //Можно заменить на: Write('\b');
+                        // Можно заменить на: Write('\b');
                         SetCursorPosition(resultStringBuilder.Length, CursorTop);
                         Write(' ');
                         SetCursorPosition(resultStringBuilder.Length, CursorTop);
