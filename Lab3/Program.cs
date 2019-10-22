@@ -10,6 +10,19 @@ namespace LaboratoryWork3
 {
     class Program
     {
+        private static string GetForcedChoice()
+        {
+            string inputString;
+
+            while (true)
+            {
+                inputString = ReadLine();
+
+                if (inputString.ToLower() == "рандомный");
+
+            }
+        }
+        
         // Метод для парсинга string в int.
         // До тех пор, пока вводимая строка не распарсится.
         private static int GetForcedParse(string exceptionMessage, int exceptionMessageShowTime = 1250)
@@ -83,6 +96,18 @@ namespace LaboratoryWork3
 
         static void Main(string[] args)
         {
+            WriteLine("Какой вид массива выбрать?\n\"Рандомный\" или \"Вводиммый?\"\n");
+
+            string arrayChoice = GetForcedChoice();
+
+            switch (arrayChoice)
+            {
+                case "рандомный":
+                    break;
+                case "вводимый":
+                    break;
+            }
+            
             ForegroundColor = ConsoleColor.Blue;
             WriteLine("Введите элементы массива\n");
             ResetColor();
