@@ -5,21 +5,59 @@ using System;
 using System.Text;
 using System.Threading;
 using static System.Console;
+using static System.ConsoleColor;
 
 namespace LaboratoryWork3
 {
     class Program
     {
-        private static string GetForcedChoice()
+        // Метод для получения выбора массива.
+        // До тех пор, пока не будет дан чёткий выбор.
+        private static string GetForcedChoice(string exceptionMessage)
         {
             string inputString;
+            char firstChar;
 
             while (true)
             {
-                inputString = ReadLine();
+                inputString = ReadLine().ToLower();
+                firstChar = inputString[0];
 
-                if (inputString.ToLower() == "рандомный");
+                switch (inputString)
+                {
+                    case "рандомный":
+                        return inputString;
 
+                    case "вводимый":
+                        return inputString;
+
+                    default:
+                        ForegroundColor = Blue;
+
+                        switch (firstChar)
+                        {
+                            case 'р':
+                                WriteLine("\nВы наверно имели в виду \"Рандомный\"?\n");
+                                ResetColor();
+
+                                if (ReadLine().ToLower() == "да")
+                                    return "рандомный";
+                                break;
+
+                            case 'в':
+                                WriteLine("\nВы наверно имели в виду \"Вводимый\"?\n");
+                                ResetColor();
+
+                                if (ReadLine().ToLower() == "да")
+                                    return "вводимый";
+                                break;
+                        }
+
+                        ForegroundColor = Red;
+                        WriteLine("\a\t" + exceptionMessage + "\n");
+                        ResetColor();
+                        break;
+                }
             }
         }
         
@@ -40,7 +78,7 @@ namespace LaboratoryWork3
 
                 ClearString(inputString);
 
-                ForegroundColor = ConsoleColor.Red;
+                ForegroundColor = Red;
                 Write("\a" + exceptionMessage);
                 Thread.Sleep(exceptionMessageShowTime);
                 ResetColor();
@@ -96,40 +134,59 @@ namespace LaboratoryWork3
 
         static void Main(string[] args)
         {
-            WriteLine("Какой вид массива выбрать?\n\"Рандомный\" или \"Вводиммый?\"\n");
+            ForegroundColor = Blue;
+            WriteLine("Какой вид массива выбрать?\n\"Рандомный\" или \"Вводимый?\"\n");
+            ResetColor();
 
-            string arrayChoice = GetForcedChoice();
+            string arrayChoice = GetForcedChoice("Выберете между \"рандомный\" и \"вводимый\"!");
+
+            int countArrayElements = 0;
+            int sumArrayElements = 0;
 
             switch (arrayChoice)
             {
                 case "рандомный":
+                    var rand = new Random();
+                    int rows = rand.Next(0, 101);
+
+                    var randomArray = new int[rows];
+
+                    for (var i = 0; i < rows; i++)
+                    {
+                        randomArray[i] = rand.Next(0, 101);
+
+                        // Подсчёт количества и суммы элементов, походящих условию задачи.
+                        if (randomArray[i] % 5 == 0 && randomArray[i] % 7 != 0)
+                        {
+                            countArrayElements++;
+                            sumArrayElements += randomArray[i];
+                        }
+                    }
                     break;
+
                 case "вводимый":
+                    ForegroundColor = Blue;
+                    WriteLine("\nВведите элементы массива\n");
+                    ResetColor();
+
+                    var inputArray = new int[9];
+
+                    // Ввод элементов массива.
+                    for (var i = 0; i < 9; i++)
+                    {
+                        inputArray[i] = GetForcedParse("Ошибка ввода!");
+
+                        // Подсчёт количества и суммы элементов, походящих условию задачи.
+                        if (inputArray[i] % 5 == 0 && inputArray[i] % 7 != 0)
+                        {
+                            countArrayElements++;
+                            sumArrayElements += inputArray[i];
+                        }
+                    }
                     break;
             }
             
-            ForegroundColor = ConsoleColor.Blue;
-            WriteLine("Введите элементы массива\n");
-            ResetColor();
-
-            var inputArray = new int[9];
-            int countArrayElements = 0;
-            int sumArrayElements = 0;
-
-            // Ввод элементов массива.
-            for (var i = 0; i < 9; i++)
-            {
-                inputArray[i] = GetForcedParse("Ошибка ввода!");
-
-                // Подсчёт количества и суммы элементов, походящих условию задачи.
-                if (inputArray[i] % 5 == 0 && inputArray[i] % 7 != 0)
-                {
-                    countArrayElements++;
-                    sumArrayElements += inputArray[i];
-                }
-            }
-
-            ForegroundColor = ConsoleColor.Green;
+            ForegroundColor = Green;
             WriteLine($"\nКоличество: {countArrayElements}\tСумма: {sumArrayElements}");
 
             ResetColor();
