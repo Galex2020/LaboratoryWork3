@@ -21,8 +21,12 @@ namespace LaboratoryWork3
             while (true)
             {
                 inputString = ReadLine().ToLower();
-                firstChar = inputString[0];
 
+                if (string.IsNullOrEmpty(inputString))
+                    firstChar = ' ';
+                else
+                 firstChar = inputString[0];
+                
                 switch (inputString)
                 {
                     case "рандомный":
@@ -32,25 +36,23 @@ namespace LaboratoryWork3
                         return inputString;
 
                     default:
-                        ForegroundColor = Blue;
+                        ForegroundColor = DarkMagenta;
 
-                        switch (firstChar)
+                        if (firstChar == 'р' || firstChar == 'h')
                         {
-                            case 'р':
-                                WriteLine("\nВы наверно имели в виду \"Рандомный\"?\n");
-                                ResetColor();
+                            WriteLine("\nВы наверно имели в виду \"Рандомный\"?\n");
+                            ResetColor();
 
-                                if (ReadLine().ToLower() == "да")
-                                    return "рандомный";
-                                break;
+                            if (ReadLine().ToLower() == "да")
+                                return "рандомный";
+                        }
+                        else if (firstChar == 'в' || firstChar == 'd')
+                        {
+                            WriteLine("\nВы наверно имели в виду \"Вводимый\"?\n");
+                            ResetColor();
 
-                            case 'в':
-                                WriteLine("\nВы наверно имели в виду \"Вводимый\"?\n");
-                                ResetColor();
-
-                                if (ReadLine().ToLower() == "да")
-                                    return "вводимый";
-                                break;
+                            if (ReadLine().ToLower() == "да")
+                                return "вводимый";
                         }
 
                         ForegroundColor = Red;
@@ -140,27 +142,22 @@ namespace LaboratoryWork3
 
             string arrayChoice = GetForcedChoice("Выберете между \"рандомный\" и \"вводимый\"!");
 
+            var startArray = new int[9];
             int countArrayElements = 0;
             int sumArrayElements = 0;
 
             switch (arrayChoice)
             {
                 case "рандомный":
+                    WriteLine();
+
                     var rand = new Random();
-                    int rows = rand.Next(0, 101);
 
-                    var randomArray = new int[rows];
-
-                    for (var i = 0; i < rows; i++)
+                    for (var i = 0; i < 9; i++)
                     {
-                        randomArray[i] = rand.Next(0, 101);
-
-                        // Подсчёт количества и суммы элементов, походящих условию задачи.
-                        if (randomArray[i] % 5 == 0 && randomArray[i] % 7 != 0)
-                        {
-                            countArrayElements++;
-                            sumArrayElements += randomArray[i];
-                        }
+                        startArray[i] = rand.Next(-100, 101);
+                        WriteLine(startArray[i]);
+                        Thread.Sleep(250);
                     }
                     break;
 
@@ -169,23 +166,22 @@ namespace LaboratoryWork3
                     WriteLine("\nВведите элементы массива\n");
                     ResetColor();
 
-                    var inputArray = new int[9];
-
                     // Ввод элементов массива.
                     for (var i = 0; i < 9; i++)
                     {
-                        inputArray[i] = GetForcedParse("Ошибка ввода!");
-
-                        // Подсчёт количества и суммы элементов, походящих условию задачи.
-                        if (inputArray[i] % 5 == 0 && inputArray[i] % 7 != 0)
-                        {
-                            countArrayElements++;
-                            sumArrayElements += inputArray[i];
-                        }
+                        startArray[i] = GetForcedParse("Ошибка ввода!");
                     }
                     break;
             }
-            
+
+            // Подсчёт количества и суммы элементов, походящих условию задачи.
+            foreach (var i in startArray)
+                if (i % 5 == 0 && i % 7 != 0)
+                {
+                    countArrayElements++;
+                    sumArrayElements += i;
+                }
+
             ForegroundColor = Green;
             WriteLine($"\nКоличество: {countArrayElements}\tСумма: {sumArrayElements}");
 
