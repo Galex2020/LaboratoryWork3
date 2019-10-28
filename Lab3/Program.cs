@@ -11,21 +11,17 @@ namespace LaboratoryWork3
 {
     class Program
     {
-        // Метод для получения выбора массива.
-        // До тех пор, пока не будет дан чёткий выбор.
+        ///<summary>
+        /// Метод для получения выбора массива.
+        /// До тех пор, пока не будет дан чёткий выбор.
+        /// </summary>
         private static string GetForcedChoice(string exceptionMessage)
         {
             string inputString;
-            char firstChar;
 
             while (true)
             {
                 inputString = ReadLine().ToLower();
-
-                if (string.IsNullOrEmpty(inputString))
-                    firstChar = ' ';
-                else
-                 firstChar = inputString[0];
                 
                 switch (inputString)
                 {
@@ -38,7 +34,7 @@ namespace LaboratoryWork3
                     default:
                         ForegroundColor = DarkMagenta;
 
-                        if (firstChar == 'р' || firstChar == 'h')
+                        if (inputString.StartsWith('р') || inputString.StartsWith('h'))
                         {
                             WriteLine("\nВы наверно имели в виду \"Рандомный\"?\n");
                             ResetColor();
@@ -46,7 +42,7 @@ namespace LaboratoryWork3
                             if (ReadLine().ToLower() == "да")
                                 return "рандомный";
                         }
-                        else if (firstChar == 'в' || firstChar == 'd')
+                        else if (inputString.StartsWith('в') || inputString.StartsWith('d'))
                         {
                             WriteLine("\nВы наверно имели в виду \"Вводимый\"?\n");
                             ResetColor();
@@ -62,9 +58,11 @@ namespace LaboratoryWork3
                 }
             }
         }
-        
-        // Метод для парсинга string в int.
-        // До тех пор, пока вводимая строка не распарсится.
+
+        /// <summary>
+        /// Метод для парсинга string в int.
+        /// До тех пор, пока вводимая строка не распарсится.
+        /// </summary>
         private static int GetForcedParse(string exceptionMessage, int exceptionMessageShowTime = 1250)
         {
             string inputString;
@@ -90,8 +88,10 @@ namespace LaboratoryWork3
                 
         }
 
-        // Метод для ограничения длинны вводимой строки.
-        // Так же реализует функции клавиш: Enter и Backspace.
+        /// <summary>
+        /// Метод для ограничения длинны вводимой строки.
+        /// Так же реализует функции клавиш: Enter и Backspace.
+        /// </summary>
         private static string GetLimitedString(int limitOfChars)
         {
             var resultStringBuilder = new StringBuilder(limitOfChars);
@@ -125,10 +125,12 @@ namespace LaboratoryWork3
             return resultStringBuilder.ToString();
         }
 
-        // Метод для стирания строки.
-        // Можно заменить на: Write(new string('\b', stringToClear.Length));
+        /// <summary>
+        /// Метод для стирания строки.
+        /// </summary>
         private static void ClearString(string stringToClear)
         {
+            // Можно заменить на: Write(new string('\b', stringToClear.Length));
             SetCursorPosition(0, CursorTop);
             Write(new string(' ', stringToClear.Length));
             SetCursorPosition(0, CursorTop);
